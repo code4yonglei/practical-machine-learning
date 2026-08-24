@@ -4,28 +4,20 @@
 # list see the documentation:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
-# -- Path setup --------------------------------------------------------------
-
-# If extensions (or modules to document with autodoc) are in another directory,
-# add these directories to sys.path here. If the directory is relative to the
-# documentation root, use os.path.abspath to make it absolute, like shown here.
-#
 
 # -- Project information -----------------------------------------------------
 
-# FIXME: choose title
-project = "Your lesson name"
-# FIXME: insert correct author
-author = "The contributors"
-copyright = f"2026, Sweden AI Factory, {author}"
+project = "Practical Machine Learning"
+author = "Yonglei Wang"
+copyright = f"2026, {author}"
 
-github_user = "sweden-ai-factory"
+github_user = "code4yonglei"
 github_repo_name = ""  # auto-detected from dirname if blank
 github_version = "main"
 conf_py_path = "/content/"  # with leading and trailing slash
 
-# -- General configuration ---------------------------------------------------
 
+# -- General configuration ---------------------------------------------------
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
@@ -34,21 +26,19 @@ extensions = [
     "sphinx.ext.githubpages",
     "sphinx_lesson",
     "sphinx_evita",
-    "sphinxcontrib.bibtex",
     "myst_nb",
     "sphinx.ext.todo",
     "sphinx.ext.intersphinx",
 ]
 
-# FIXME: add bibtex files for references if any
-bibtex_bibfiles = []
 
 # Settings for myst_nb:
 # https://myst-nb.readthedocs.io/en/latest/use/execute.html#triggering-notebook-execution
 # nb_execution_mode = "off"
 # nb_execution_mode = "auto"   # *only* execute if at least one output is missing.
 # nb_execution_mode = "force"
-nb_execution_mode = "cache"
+nb_execution_mode = "off"
+
 
 # https://myst-parser.readthedocs.io/en/latest/syntax/optional.html
 myst_enable_extensions = ["colon_fence", "attrs_inline", "substitution"]
@@ -79,9 +69,7 @@ from pathlib import Path
 HERE = Path(__file__).parent
 detected_repo_name = HERE.parent.name
 
-# The theme to use for HTML and HTML Help pages.  See the documentation for
-# a list of builtin themes.
-#
+
 html_title = project
 html_theme = "furo"
 
@@ -90,13 +78,13 @@ html_theme = "furo"
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ["_static"]
 html_css_files = ["overrides.css"]
-html_favicon = str((HERE / "_static" / "favicon.png").resolve())
+html_favicon = str((HERE / "_static" / "blackjack-s-nook.png").resolve())
 github_repo_url = (
     f"https://github.com/{github_user}/{github_repo_name or detected_repo_name}"
 )
 html_theme_options = {
-    "light_logo": "SEAIF_favicon_black.png",
-    "dark_logo": "SEAIF_favicon_white.png",
+    "light_logo": "blackjack-s-nook.png",
+    "dark_logo": "blackjack-s-nook.png",
     "source_repository": github_repo_url,
     "source_branch": github_version,
     "source_directory": conf_py_path,
@@ -126,10 +114,6 @@ html_context = {
     "conf_py_path": conf_py_path,
 }
 
-# sphinx-evita
-evita_eu_funding_badge = "co-funded"
-
-# FIXME: modify intersphinx mapping to link to external content
 
 # Intersphinx mapping.  For example, with this you can use
 # :py:mod:`multiprocessing` to link straight to the Python docs of that module.
@@ -150,8 +134,8 @@ intersphinx_mapping = {
     # "myst": ("https://myst-parser.readthedocs.io/en/latest/", None),
 }
 
-import os
 
+import os
 if os.environ.get("GITHUB_REF", "") == "refs/heads/main":
     html_js_files = [
         (
@@ -162,3 +146,4 @@ if os.environ.get("GITHUB_REF", "") == "refs/heads/main":
             },
         ),
     ]
+
