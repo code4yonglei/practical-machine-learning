@@ -30,17 +30,17 @@ This course is intended for researchers and engineers transitioning into ML lear
 :caption: Setup
 :maxdepth: 1
 
-00-setting-up-programming-environment.ipynb
+0-setting-up-programming-environment.ipynb
 :::
 
 :::{toctree}
 :caption: Episodes
 :maxdepth: 1
 
-01-intro-to-ml.ipynb
-02-fundamentals-of-ml.ipynb
-03-scientific-data-for-ml.ipynb
-04-data-preparation-for-ml.ipynb
+1-intro-to-ml.ipynb
+2-fundamentals-of-ml.ipynb
+3-scientific-data-for-ml.ipynb
+4-data-preparation-for-ml.ipynb
 :::
 ::::
 
