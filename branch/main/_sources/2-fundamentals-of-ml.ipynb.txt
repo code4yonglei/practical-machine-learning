@@ -1,0 +1,677 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "id": "814b03e5",
+   "metadata": {},
+   "source": [
+    "# Fundamentals of Machine Learning"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "6d039712",
+   "metadata": {},
+   "source": [
+    "<div class='alert alert-info'>\n",
+    "\n",
+    "- Describe representative types of ML (supervised, unsupervised, reinforcement learnings, *etc*.).\n",
+    "- Explain general workflow of a ML project.\n",
+    "- Introduce representative ML libraries.\n",
+    "</div>"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "f522d139",
+   "metadata": {},
+   "source": [
+    "## 1. Types of ML"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "27c765d3",
+   "metadata": {},
+   "source": [
+    "ML can be broadly categorized into three main types depending on how models learn from input data and nature of input data they process.\n",
+    "\n",
+    "<div style=\"text-align:center;\"><figure><img src=\"./images/fundamentals/ml-three-types.png\" width=\"75%\"><figcaption></figcaption>Figure: Three main types of ML. Main approaches include classification and regression under supervised learning and clustering under unsupervised learning. RL enhance model performance by interacting with environment. Coloured dots and triangles represent training data. Yellow stars represent new data which can be predicted by trained model. This figure was taken from paper [Machine Learning Techniques for Personalised Medicine Approaches in Immune-Mediated Chronic Inflammatory Diseases: Applications and Challenges](https://www.frontiersin.org/journals/pharmacology/articles/10.3389/fphar.2021.720694/full).</figure></div>"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "e7aa27c6",
+   "metadata": {},
+   "source": [
+    "### 1.1 Supervised learning"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "a3ba371a",
+   "metadata": {},
+   "source": [
+    "In supervised learning, model is trained on a *labeled* dataset, where each input is paired with a corresponding output (label).\n",
+    "- This approach is called **supervised** because learning process is guided by presence of labels, which act like a teacher providing correct answers during training.\n",
+    "- Goal is to learn a mapping from inputs to outputs to make predictions on new, unseen data.\n",
+    "- Supervised learning has two subtypes and representative examples of these two subtypes in real-word problems are listed below.\n",
+    "    - **Classification** is used when target variable is categorical (predicting discrete categories), such as email spam detection (spam/ham), image recognition (cat/dog), and medical diagnosis (disease/no disease), *etc*.\n",
+    "    - **Regression** is applied when target variable is continuous (predicting continuous values), such as predicting house prices based on features like size, location, and age."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "e1519884",
+   "metadata": {},
+   "source": [
+    "### 1.2 Unsupervised learning"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "cb66cd05",
+   "metadata": {},
+   "source": [
+    "In unsupervised learning, model works with *unlabeled* data, which means that dataset contains only input features without associated labels.\n",
+    "- Goal is to identify hidden patterns, structures, or relationships within data without explicit guidance on what to predict.\n",
+    "    - In lots of real-world scenarios, labels may not always be available, and collecting labeled data can be expensive, time-consuming, or even impossible.\n",
+    "\t- In such cases, we have to use unsupervised learning to uncover patterns and structure in data.\n",
+    "- Unsupervised learning is essential for analyzing vast amounts of raw data generated in real-world applications, from scientific research to business intelligence.\n",
+    "\t- Its significance can be seen across several key areas.\n",
+    "\t- **Exploratory Data Analysis** (EDA) can reveal natural groupings, trends, and correlations that might otherwise remain hidden, providing a crucial first step in any data-driven investigation.\n",
+    "\t- **Anomaly Detection**\n",
+    "\t\t- Unsupervised learning is vital for maintaining security and operational integrity.\n",
+    "\t\t- By modeling \"normal\" behavior, algorithms can identify unusual patterns, such as fraudulent financial transactions, network intrusions, or rare mechanical failures, without needing labeled examples of every type of anomaly.\n",
+    "\t- **Feature Engineering** and **Representation Learning**\n",
+    "\t\t- Methods like PCA can compress data into its most informative components, reducing noise and improving efficiency and performance of downstream supervised models.\n",
+    "- Unsupervised learning also has two main subtypes, and representative examples of these two subtypes in real-word problems are listed below.\n",
+    "    - **Clustering** (grouping similar data points together): customer segmentation in marketing (grouping users by behavior), image segmentation (grouping similar pixels), *etc*.\n",
+    "    - **Dimensionality reduction** (simplifying data by reducing features while preserving important information): compressing high-dimensional data (*e.g.*, reducing image features for faster processing), anomaly detection, *etc*."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "07abaeb2",
+   "metadata": {},
+   "source": [
+    "<details>\n",
+    "<summary><strong><mark>Challenges in unsupervised learning</mark></strong></summary>\n",
+    "\n",
+    "- A major challenge in unsupervised learning is evaluating whether algorithm learned something useful.\n",
+    "\t- Unsupervised learning algorithms are usually applied to data that does not contain any label information, so we don’t know what right output should be.\n",
+    "\t- Therefore, it is very hard to say whether a model \"did well\".\n",
+    "\t\t- *i.e.*, our hypothetical clustering algorithm could have grouped together all pictures that show faces in profile and all full-face pictures.\n",
+    "- As a consequence, unsupervised algorithms are used often in an exploratory setting, when a data scientist wants to understand data better, rather than as part of a larger automatic system.\n",
+    "- Another common application for unsupervised algorithms is as a preprocessing step for supervised algorithms.\n",
+    "\t- Learning a new representation of data can sometimes improve accuracy of supervised algorithms, or can lead to reduced memory and time consumption.\n",
+    "- Before we start with \"real\" unsupervised algorithms, we will briefly discuss some simple preprocessing methods that often come in handy.\n",
+    "\t- Even though preprocessing and scaling are often used in tandem with supervised learning algorithms, scaling methods don’t make use of supervised information, making them unsupervised."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "23520e35",
+   "metadata": {},
+   "source": [
+    "### 1.3 Reinforcement learning"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "a184ef16",
+   "metadata": {},
+   "source": [
+    "Model (agent) learns by interacting with an environment.\n",
+    "- It takes actions, receives feedback (rewards or penalties), and learns a strategy (policy) to maximize long-term rewards.\n",
+    "- Representative examples of RL in real-word problems include game-playing AI (*e.g.*, AlphaGo), robot navigation, autonomous driving, *etc*."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "7b75a353",
+   "metadata": {},
+   "source": [
+    "### 1.4 Other subtypes"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "20fd6dd2",
+   "metadata": {},
+   "source": [
+    "In addition to supervised and unsupervised learning, there are other important paradigms in ML.\n",
+    "- **Semi-supervised learning** bridges gap between supervised and unsupervised learning by using a small amount of labeled data together with a large amount of unlabeled data, helping models learn more effectively when labeling is expensive or time-consuming (*e.g.*, medical image analysis).\n",
+    "- **Self-supervised learning** is a form of unsupervised learning where model generates its own labels from data -- typically for pretraining models on tasks like image or language understanding, enabling them to learn robust representations without explicit labels (*e.g.*, predicting next word in a sentence, and filling in missing image patches).\n",
+    "- **Transfer learning** involves applying knowledge from a pretrained model, trained on a large, general dataset, to a new, related task, significantly reducing training time and data requirements (*e.g.*, fine-tuning a speech recognition model for a new dialect).\n",
+    "\n",
+    "These techniques expand capabilities and versatility of ML across data-limited or computationally constrained environments."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "3939d273",
+   "metadata": {},
+   "source": [
+    "## 2. ML Workflow"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "946a7efd",
+   "metadata": {},
+   "source": [
+    "A ML workflow is a structured approach for developing, training, evaluating, and deploying ML models. It typically involves several key phases, including data collection, preprocessing, model training and evaluation, and finally, deployment to production.\n",
+    "\n",
+    "Below is a graphical representation of a general workflow to train a model using ML algorithms. Detailed steps may vary depending on specific datasets and tasks.\n",
+    "\n",
+    "<div style=\"text-align:center;\"><figure><img src=\"./images/fundamentals/ML-workflow.png\" width=\"100%\"><figcaption></figcaption></figure></div>"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "5f78188c-e7b8-4eea-987e-37d59fc3e414",
+   "metadata": {},
+   "source": [
+    "### 2.1 Business understanding"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "df4b43ca-e1d1-4f33-90a4-958ded0cafec",
+   "metadata": {},
+   "source": [
+    "**Problem definition** (business understanding) is first and most critical phase of any ML project. It sets direction, scope, and goals forentire project.\n",
+    "- We should understand problem domain: what is real-world problem we are trying to solve? are we predicting, classifying, or grouping data? (*e.g.*, predict house prices, detect spam emails, cluster customers).\n",
+    "- We should determine if ML is appropriate solution for problem.\n",
+    "- We then should identify expected outputs: what will ML model produce? (*e.g.*, a number, a label, or a probability).\n",
+    "- We define type of ML task (*e.g.*, classification and regression tasks for supervised learning, clustering, dimensionality reduction for unsupervised learning, and decision-making tasks for RL)."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "9415c15e-244b-48c3-86b0-5feafcd47635",
+   "metadata": {},
+   "source": [
+    "<details>\n",
+    "<summary><strong><mark>Project Setup</mark></strong></summary>\n",
+    "\n",
+    "**Project Setup** is to set up programming/development environment for project.\n",
+    "- Hardware requirements (CPU, SSD, GPU, cloud platforms, *etc.*).\n",
+    "- Software requirements (programming languages and libraries, ML/DL frameworks, and development tools, IDEs, Git/Docker, *etc*).\n",
+    "- Project structure: organize project for clarity and scalability.\n",
+    "- A typical ML project structure looks like this:\n",
+    "\n",
+    "```\n",
+    "  ML_Project/\n",
+    "  ├── data/                 # raw and processed data\n",
+    "  │   ├── raw/              # original, unprocessed data\n",
+    "  │   ├── processed/        # cleaned, preprocessed data\n",
+    "  ├── notebooks/            # jupyter notebooks for EDA & modeling\n",
+    "  ├── src/                  # source code\n",
+    "  │   ├── utils/            # utility functions (*e.g.*, metrics, logging)\n",
+    "  │   ├── preprocessing.py  # data cleaning script  \n",
+    "  │   └── train.py          # model training script\n",
+    "  ├── models/               # trained model files (*e.g.*, .pkl, .h5)\n",
+    "  ├── tests/                # unit and integration tests\n",
+    "  ├── README.md             # project overview and setup instructions\n",
+    "  ├── requirements.txt      # project dependencies\n",
+    "  ├── config.yaml           # configuration file for hyperparameters and paths\n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "b4513a37-01a8-45ca-93e3-9f3a419e1b23",
+   "metadata": {},
+   "source": [
+    "### 2.2 Data collection, preparation and processing"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "3fcda6d0-5369-45de-b4f6-6e3c4a7b0b42",
+   "metadata": {},
+   "source": [
+    "In ML, data collection, preparation and processing are crucial steps that significantly affect performance of a model. High-quality, well-processed data leads to better predictions, while poor data can result in unreliable models.\n",
+    "- **Data collection**: Gather necessary data from various sources (*e.g.*, databases, APIs (twitter, linkedin, *etc.*), or manual collection), and ensure that data is representative and sufficient for problem.\n",
+    "- **Data preparation** refers to activities performed to make raw data ready for analysis or modeling.\n",
+    "\t- It focuses on data quality, structure, and usability.\n",
+    "\t- Goal of this step is to produce a clean, consistent, and well-organized dataset.\n",
+    "\t- Typical tasks include data cleaning (handling missing values (drop, impute, or predict), removing duplicates or irrelevant data, correcting errors and inconsistencies), data formatting and restructuring (converting data types, reshaping tables), feature selection, data splitting, and basic feature creation, and data labeling and annotation.\n",
+    "- **Data processing** refers to systematic transformation of data to extract information, patterns, or features.\n",
+    "\t- It focuses on computation and transformation rather than cleanliness.\n",
+    "\t- Goal of this step is to transform prepared data into a form suitable for analysis, modeling, or decision-making.\n",
+    "\t- Typical tasks include data transformation (normalization and standardization, encoding categorical variables, aggregation and filtering), feature engineering (creating new features, dimensionality reduction), signal, image, or text processing (filtering signals, tokenizing text, extracting image features), batch or streaming processing.\n",
+    "\n",
+    "<div class='alert alert-info'>\n",
+    "    \n",
+    "**One-sentence summary for typical ML pipeline**\n",
+    "- data preparation: making raw data clean, consistent, and usable.\n",
+    "    - data collection, data cleaning, feature/label separation, train/validation/test split, data formatting and labeling\n",
+    "- data processing: transforming prepared data into informative representations\n",
+    "    - normalization/standardization, encoding categorical variables, feature extraction, dimensionality reduction, data augmentation\n",
+    "</div>"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "441170d7-643c-487d-be7f-28252d337b78",
+   "metadata": {},
+   "source": [
+    "### 2.3 Model training, evaluation and assessment, and optimization"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "12823e60-fc8a-4ae8-9cd5-d72272afca00",
+   "metadata": {},
+   "source": [
+    "**Model selection and training** refer to process of choosing an appropriate model architecture and training it to learn patterns from data to solve a specific task. It involves selecting appropriate algorithms (*e.g.*, linear/nonlinear models, tree-based models, NN-based models, *etc*) based on problem type and data characteristics, configuring model hyperparameters, training constructed model on training dataset, and making predictions on testing dataset."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "bab3002d-2665-43ca-b90e-b55a8d52798c",
+   "metadata": {},
+   "source": [
+    "**Model evaluation and assessment** refers to a systematic process of measuring and analyzing a model's performance to determine its effectiveness in solving a specific task. \n",
+    "- It involves using metrics and techniques to quantify how well a model performs and how reliably it generalizes to unseen data, identifies patterns, and meets desired objectives, typically using a test dataset separate from training data.\n",
+    "- Evaluation focuses on performance measurement using appropriate metrics, while assessment emphasizes comparative analysis, robustness, and decision-making about whether a model is acceptable for deployment or further improvement.\n",
+    "- Goal is not only to quantify predictive accuracy but also to understand a model’s strengths, limitations, and suitability for a given task."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "57e72731-ebfa-4ce2-91a6-987f2904cccc",
+   "metadata": {},
+   "source": [
+    "Below are common evaluation metrics by task types:\n",
+    "\n",
+    "| Task types | Evaluation metrics |\n",
+    "| :--------: | :----------------: |\n",
+    "| Classification | Accuracy, precision, recall, F1-score, ROC-AUC, *etc.* |\n",
+    "| Regression | Mean Squared Error (MSE), Mean Absolute Error (MAE), <br>Root Mean Squared Error (RMSE), R-squared, *etc.* |\n",
+    "| Clustering | Silhouette score (measures how similar a sample is to its own cluster compared to other clusters) for data without ground truth, Adjusted Rand Index (ARI) for data with ground truth |\n",
+    "| Dimensionality reduction | Reconstruction-based metrics (Reconstruction Error, Mean Squared Reconstruction Error), Structure preservation metrics (Trustworthiness, Continuity, Neighborhood Preservation Ratio) |"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "9f291fee-1c0a-493f-87a7-04425ad5c83e",
+   "metadata": {},
+   "source": [
+    "Representative techniques and processes for assessment include:\n",
+    "- **Comparison with baselines**: Comparing model performance against simple baselines (*e.g.*, random guessing, linear models) to ensure meaningful improvement.\n",
+    "- **Train-validation-test split**: Divide data into training (model learning), validation (hyperparameter tuning), and test (final evaluation) sets to prevent overfitting.\n",
+    "- **Cross-validation**: Use k-fold cross-validation to assess model stability across multiple data subsets.\n",
+    "- **Robustness testing**: Evaluate performance under noisy, adversarial, or out-of-distribution data.\n",
+    "- **Time-aware validation** is used to respect temporal order for time-dependent data. \n",
+    "- Beyond numerical metrics, assessment may also involve error analysis, confusion matrix inspection, learning curves, and statistical significance testing to compare competing models."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "7b916950-0365-47e8-8857-6ad57ac5fdf2",
+   "metadata": {},
+   "source": [
+    "**Model optimization** is process of systematically improving a ML model’s performance by adjusting factors that influence how it learns and generalizes. This involves selecting the right model type, tuning hyperparameters (like learning rate, number of layers, or batch size), choosing effective training algorithms, and applying regularization techniques to prevent overfitting. It also includes refining input features, ensuring high-quality data, and aligning loss functions with task’s goals. Ultimate aim is to find combination of model design, training strategy, and data preparation that maximizes performance on unseen data, balancing accuracy, efficiency, and robustness.\n",
+    "\n",
+    "<details>\n",
+    "<summary><strong><mark>Representative model optimization strategies</mark></strong></summary>\n",
+    "\n",
+    "- Hyperparameter Tuning\n",
+    "    - Adjusting parameters that control model learning but are not learned from data, *e.g.*, learning rate, batch size, number of hidden layers, tree depth.\n",
+    "    - Methods: Grid search, random search, Bayesian optimization, Hyperband, population-based training.\n",
+    "- Regularization Techniques\n",
+    "    - Methods to prevent overfitting and improve generalization.\n",
+    "    - Examples: L1/L2 penalties, dropout, early stopping, label smoothing, data augmentation, noise injection.\n",
+    "- Neural Network Architecture & Algorithm Optimization\n",
+    "    - Designing effective network structures and selecting training strategies.\n",
+    "    - Includes: number/depth of layers, width of layers, activation functions, normalization layers (BatchNorm, LayerNorm), skip connections, choice of optimizer (SGD, Adam, RMSProp).\n",
+    "- Ensemble Methods\n",
+    "    - Combining multiple models to improve robustness and predictive performance.\n",
+    "    - Examples: Bagging (Random Forest), Boosting (Gradient Boosting, XGBoost, LightGBM, CatBoost), Stacking/Blending.\n",
+    "- Feature Engineering\n",
+    "    - Creating, selecting, or transforming features to improve model performance.\n",
+    "    - Examples: Dimensionality reduction (PCA, autoencoders), interaction features, feature selection (filter, wrapper, embedded methods).\n",
+    "- Loss Function & Evaluation Optimization\n",
+    "    - Choosing or customizing loss functions aligned with the task objective.\n",
+    "    - Examples: Cross-entropy, focal loss, Huber loss, weighted losses for imbalanced data; metric-driven optimization like AUC, F1-score.\n",
+    "- Data-Level Optimization\n",
+    "    - Improving data quality and representation.\n",
+    "    - Examples: Normalization, standardization, handling missing values, outlier treatment, balanced sampling.\n",
+    "- Computational & System-Level Optimization\n",
+    "    - Enhancing efficiency and scalability of model training.\n",
+    "    - Examples: Mixed precision training, parallelism (data/model), memory optimization, kernel fusion (GPU/CUDA)."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "f74d28b2-4332-47dc-8ebd-942adb44be6e",
+   "metadata": {},
+   "source": [
+    "### 2.4 Model deployment, documentation, and maintenance"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "e7cc319a-874b-4268-bdbc-c5e3cfdabbe4",
+   "metadata": {},
+   "source": [
+    "The lifecycle of a ML model extends beyond training to encompass deployment, documentation, and ongoing maintenance, ensuring model delivers reliable value in real-world applications.\n",
+    "- **Model deployment** involves integrating trained model into production environments, such as web services, mobile apps, or enterprise systems, so it can generate predictions on new, unseen data.\n",
+    "\t- Deployment also requires attention to scalability, latency, reliability, and security, ensuring that model can handle production workloads efficiently.\n",
+    "\t- Techniques such as containerization (Docker), model serving frameworks (TensorFlow Serving, TorchServe), and cloud platforms (AWS, Azure, GCP) are commonly used to streamline deployment and ensure reproducibility.\n",
+    "- **Documentation** is essential for transparency, reproducibility, and collaboration.\n",
+    "\t- It includes recording model’s design decisions, data preprocessing steps, feature selection methods, hyperparameter configurations, training procedures, evaluation metrics, and known limitations.\n",
+    "\t- Good documentation allows other developers, data scientists, or stakeholders to understand how model works, reproduce results, and troubleshoot issues effectively.\n",
+    "- **Model maintenance** is an ongoing process of monitoring and updating a deployed model to ensure its continued performance over time.\n",
+    "\t- ML models can degrade due to changing data distributions, concept drift, or evolving business requirements.\n",
+    "\t- Maintenance activities include monitoring performance metrics, detecting drift in data or concept, retraining models with new data, updating hyperparameters or architectures, and addressing issues such as bias or ethical concerns.\n",
+    "\t- Automating monitoring pipelines and establishing clear update schedules are critical to maintaining reliable and accurate predictions in production environments.\n",
+    "\n",
+    "Together, these stages form a continuous, structured process that maximizes utility, reliability, and longevity of ML models in production."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "34da2bfe",
+   "metadata": {},
+   "source": [
+    "## 3. ML Libraries"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "ff3d3304",
+   "metadata": {},
+   "source": [
+    "There are numerous libraries available for ML that simplify process of building, training, and deploying models.\n",
+    "- These libraries provide ready-to-use implementations of algorithms, tools for data preprocessing, utilities for model evaluation, and even frameworks for large-scale DL.\n",
+    "- Some are optimized for beginners with easy-to-use APIs, while others are designed for high performance and flexibility, making them suitable for research and production environments alike.\n",
+    "- By leveraging these libraries, practitioners can focus more on solving problems and less on reinventing basic components."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "4121ffbd",
+   "metadata": {},
+   "source": [
+    "### 3.1 Scikit-learn"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "45d5f7db",
+   "metadata": {},
+   "source": [
+    "**Scikit-learn = SciPy Toolkits**, is a widely-used, open-source Python library designed for **classical ML**, providing a variety of ready-to-use implementations of supervised and unsupervised algorithms and tools for tasks, such classification, regression, clustering, and dimensionality reduction, through a simple and **consistent interface**.\n",
+    "- It is built upon **SciPy stack**, which involves NumPy, SciPy, Matplotlib, Pandas, and it is designed for ease of use, making it ideal for beginners and rapid prototyping.\n",
+    "    - Other such common libraries are *scikit-image* and *statsmodels*.\n",
+    "- Scikit-learn was initially started in 2007 as a Google Summer of Code project by David Cournapeau, who has also been involved in development of NumPy and SciPy.\n",
+    "\t- By 2010, more developers were starting to get involved, and 1st public release was made in Feb. 2010.\n",
+    "- It supports supervised learning (*e.g.*, SVM, decision trees, random forests), unsupervised learning (*e.g.*, k-means, PCA), and semi-supervised learning, with robust tools for data preprocessing, model evaluation, and hyperparameter tuning via `GridSearchCV`.\n",
+    "- Scikit-learn excels in handling small to medium-sized datasets and includes utilities for data preprocessing, model evaluation, hyperparameter tuning, and pipeline construction.\n",
+    "    - However, it lacks support for DL and GPU acceleration, limiting its scalability for large datasets or complex NN tasks.\n",
+    "- All of scikit-learn's implementations run in memory on a single machine.\n",
+    "\t- There are solutions being developed that allow scikit-learn to scale to multiple machines, such as `Dask`.\n",
+    "\t- Many scikit-learn algorithms allow parallel execution using `joblib`, which natively provides thread-based and process-based parallelism.\n",
+    "\t- Dask can scale these joblib-backed algorithms out to a cluster of machines by providing an alternative joblib backend."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "81197593",
+   "metadata": {},
+   "source": [
+    "<details>\n",
+    "<summary><strong><mark>Three primary APIs</mark></strong></summary>\n",
+    "\n",
+    "Scikit-learn is designed in a way to have similar interfaces across functionalities, and it is organized around three primary APIs, estimator, predictor, and transformer.\n",
+    "- **Estimators** are core interface implemented by classification, regression, clustering, and dimensionality reduction methods.\n",
+    "\t- An estimator is initialized from hyperparameter values and implements actual learning process in `fit` method, which you call while providing input data and labels in form of `X_train` and `y_train` arrays.\n",
+    "\t- It will run learning algorithm to learn parameters and store them for future use.\n",
+    "\t- In addition to this, estimator also offers other complementary tasks, like:\n",
+    "    \t- Feature extraction, which involves transforming input data into numerical features that can be used for ML purposes.\n",
+    "    \t- Feature selection, which selects features in your data that most contribute to prediction output of model.\n",
+    "- **Predictors** provide a predict method to take data which needs to be predicted through a NumPy array that we usually refer to as `X_test`.\n",
+    "\t- It applies required transformation with respect to parameters that have been learned by `fit` method and provides predicted values or labels.\n",
+    "\t- Some unsupervised learning estimators provide a predict method to obtain cluster labels.\n",
+    "    - In addition to predicting, predictor can also implement methods that are in charge of quantifying confidence of prediction, also called model performance.\n",
+    "        - These confidence functions vary from model to model, but their main objective is to determine how far prediction is from reality.\n",
+    "        - This is done by taking an `X_test` with its corresponding `Y_test` and comparing it to predictions made with same `X_test`.\n",
+    "- **Transformer** interfaces implement mechanism to transform given data in form of NumPy array through preprocessing and feature extraction stages.\n",
+    "\t- Scaling and normalization methods implement transform method which can be called after learning parameters.\n",
+    "\t- Advantage of transformer is that once it has been applied to training dataset, it stores values used for transforming training data.\n",
+    "    \t- This can be used to transform test dataset to same distribution."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "c1f39af0",
+   "metadata": {},
+   "source": [
+    "<details>\n",
+    "<summary><strong><mark>Ecosystem of Scikit-Learn</mark></strong></summary>\n",
+    "\n",
+    "- Scikit-learn, venerable Python library, stands as a cornerstone in ML landscape.\n",
+    "- Renowned for its simplicity and efficiency, scikit-learn is go-to toolkit for those beginning their journey into realm of ML.\n",
+    "- Library's ecosystem is an embodiment of versatility, encompassing a wide array of ML tasks.\n",
+    "- One of its greatest strengths is its seamless integration with broader python scientific stack.\n",
+    "- Libraries such as numpy and pandas interlock perfectly with scikit-learn.\n",
+    "- Its design principles make it an ideal teaching tool that align with pedagogical aim of demystifying complexities of ML algorithms.\n",
+    "- It is not merely a collection of algorithms, it is a compendium of state-of-art techniques that address a multitude of ML challenges."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "4cbaf16a",
+   "metadata": {},
+   "source": [
+    "<details>\n",
+    "<summary><strong><mark>Advantages of Scikit-Learn</mark></strong></summary>\n",
+    "\n",
+    "- ease of use\n",
+    "\t- scikit-learn is characterized by a clean API, with a small learning curve in comparison to other libraries such as TensorFlow or Keras\n",
+    "\t- API is popular for its uniformity and straightforward approach\n",
+    "\t- users of scikit-learn do not necessarily need to understand math behind models\n",
+    "- uniformity\n",
+    "\t- its uniform API makes it very easy to switch from model to model, as basic syntax required for one model is same for others\n",
+    "- documentation/tutorials\n",
+    "\t- library is completely backed up by documentation, which is effortlessly accessible and easy to understand\n",
+    "\t- additionally, it also offers step-by-step tutorials that cover all topics required to develop any ML project\n",
+    "- reliability and collaborations\n",
+    "\t- as an open source library, scikit-learn benefits from inputs of multiple collaborators who work each day to improve its performance\n",
+    "\t- this participation from many experts from different contexts helps to develop not only a more complete library but also a more reliable one\n",
+    "- coverage\n",
+    "\t- as you scan list of components that library has, you will discover that it covers most ML tasks, ranging from supervised models such as classification and regression algorithms to unsupervised models such as clustering and dimensionality reduction\n",
+    "\t- moreover, due to its many collaborators, new models tend to be added in relatively short amounts of time"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "265948d6",
+   "metadata": {},
+   "source": [
+    "### 3.2 Keras"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "624e0ee3",
+   "metadata": {},
+   "source": [
+    "**Keras** is a high-level NNs API that simplifies the process of building and training DL models.\n",
+    "- Originally an independent library, Keras is now tightly integrated with TensorFlow as its official high-level interface (but also usable standalone), offering an accessible way to experiment with DL without sacrificing performance.\n",
+    "- Keras provides user-friendly abstractions for layers, models, loss functions, and optimizers, allowing users for quick prototyping of NNs for tasks like image classification, text generation, and time series forecasting with minimal code.\n",
+    "- Keras abstracts away much of complexity of TensorFlow while retaining flexibility, making it ideal for beginners and those who need fast experimentation."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "6566ab3a",
+   "metadata": {},
+   "source": [
+    "### 3.3 TensorFlow"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "c92ce34e",
+   "metadata": {},
+   "source": [
+    "Developed by Google, **TensorFlow** is a powerful open-source library primarily for DL but versatile enough for a broad range of ML tasks.\n",
+    "- It provides a flexible ecosystem for building complex models, including NNs for CV, NLP, and time series analysis.\n",
+    "- TensorFlow supports distributed computing across CPUs, GPUs, and TPUs, making it suitable for both research and production at scale.\n",
+    "- Its robust features, such as TensorBoard for visualization, TensorFlow Serving for model deployment, and TensorFlow Lite for mobile inference, make it a comprehensive framework for end-to-end ML development.\n",
+    "- TensorFlow’s high-level Keras API simplifies model building, while its low-level operations provide flexibility for advanced research.\n",
+    "- TensorFlow is well-suited for tasks like image recognition, NLP, and RL, though its complexity can pose a steeper learning curve for beginners compared to alternatives like PyTorch."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "fdb5263b",
+   "metadata": {},
+   "source": [
+    "### 3.4 PyTorch"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "1d11e6d6",
+   "metadata": {},
+   "source": [
+    "PyTorch is developed by Facebook’s AI Research Lab (FAIR), is auser-friendly and open-source DL library that has gained significant popularity in academia and industry.\n",
+    "- Known for its intuitive design and \"define-by-run\" (eager execution) approach, PyTorch allows developers to build, train, and debug models in a flexible and interactive manner.\n",
+    "- Its strong support for GPU acceleration and extensive ecosystem-ranging from CV (`torchvision`) to NLP (`torchtext`) and audio (`torchaudio`) -- make it an excellent choice for cutting-edge DL research and production.\n",
+    "- Popular in academia and increasingly in industry, PyTorch excels in rapid prototyping and experimentation but is less optimized for production deployment compared to TensorFlow.\n",
+    "- Its active community and support for GPU acceleration make it a favorite for cutting-edge ML and DL research."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "5953b01a",
+   "metadata": {},
+   "source": [
+    "### 3.5 XGBoost & LightGBM"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "93f47341",
+   "metadata": {},
+   "source": [
+    "**XGBoost** (Extreme Gradient Boosting) and **LightGBM** (Light Gradient Boosting Machine) are high-performance gradient boosting libraries that have become go-to solutions for structured data problems, such as tabular datasets.\n",
+    "- Both libraries implement optimized gradient boosting algorithms that deliver fast training speeds, high accuracy, and scalability to large datasets.\n",
+    "- XGBoost is known for its robustness and versatility, while LightGBM offers further speed and memory efficiency through histogram-based algorithms and leaf-wise growth strategies.\n",
+    "- These libraries have become essential tools for data scientists working with structured data, outperforming traditional models in many real-world scenarios."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "1bf5f5e9",
+   "metadata": {},
+   "source": [
+    "### 3.6 Hugging Face Transformers"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "3056e7f5",
+   "metadata": {},
+   "source": [
+    "**Hugging Face Transformers** is a cutting-edge library that provides access to state-of-the-art pre-trained models for NLP tasks and CV, including text classification, translation, summarization, and question answering.\n",
+    "- Library’s pre-trained models and tokenizers simplify NLP workflows by enabling rapid experimentation with large language models, and in addition, this library supports both TensorFlow and PyTorch backends, integrating with datasets via Hugging Face’s datasets library, and has a vibrant community contributing to its continuous development."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "3b5a2a95",
+   "metadata": {},
+   "source": [
+    "### 3.7 FastAI"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "fa4e9ee6",
+   "metadata": {},
+   "source": [
+    "**FastAI** is a high-level DL library built on PyTorch, designed to make AI accessible to a wider audience by simplifying complex tasks.\n",
+    "- It provides high-level abstractions and best practices out-of-the-box, allowing users to train powerful models with minimal code and optimal defaults.\n",
+    "- FastAI is particularly well-known for its transfer learning capabilities, enabling quick adaptation of pre-trained models for tasks like image classification and text generation.\n",
+    "- With its focus on practical usage, education, and strong community support, FastAI is ideal for beginners and practitioners who want to quickly deploy models without deep theoretical expertise."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "5ca5dcfa",
+   "metadata": {},
+   "source": [
+    "### 3.8 JAX"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "88e29286",
+   "metadata": {},
+   "source": [
+    "**JAX**, developed by Google, combines NumPy-like syntax with automatic differentiation and GPU/TPU acceleration, making it ideal for high-performance ML research.\n",
+    "- It enables composable function transformations (gradients, JIT compilation) and scales efficiently across hardware.\n",
+    "- While not as high-level as TensorFlow or PyTorch, JAX is favored for cutting-edge numerical computing, physics simulations, and advanced NN research where speed and flexibility are crucial."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "fb722700",
+   "metadata": {},
+   "source": [
+    "### 3.9 Summary of ML libraries"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "0b4d4bc1",
+   "metadata": {},
+   "source": [
+    "These libraries cater to different needs:\n",
+    "- Scikit-learn for classical ML, TensorFlow and PyTorch for DL and scalability, Keras for simplicity, XGBoost for high-performance tabular data tasks, and Hugging Face for transformer-based applications.\n",
+    "- Choice of these libraries depends on task, data type, scalability needs, user expertise, and whether focus is research, prototyping, or production deployment.\n",
+    "- A summary of best features and key strengths of these libraries are summarized below.\n",
+    "\n",
+    "| Library | Best Feature | Key Strength |\n",
+    "| :-----: | :----------: | :----------: |\n",
+    "| Scikit-Learn | Simple and consistent API <br>for classical machine learning tasks  <br>(classification, regression, clustering) <br>and small/medium datasets | Seamless integration with NumPy/Pandas <br>and extensive documentation for ease-of-use with <br>wide algorithm support |\n",
+    "| PyTorch | Dynamic computation graph (define-by-run) <br>for flexible model building and debugging | Flexible, intuitive framework with strong adoption <br>for academic research in DL tasks |\n",
+    "| TensorFlow | Scalability with GPU/TPU acceleration <br>for complex deep learning models | Excellent ecosystem (Keras, TF Hub, TF-Agents) <br>for production-scale applications |\n",
+    "| Keras | High-level, user-friendly API <br>for rapid prototyping | Simplifies construction of DL models, making it beginner-friendly <br>and efficient with TensorFlow compatibility <br>for quick model development |\n",
+    "| XGBoost & <br>LightGBM | Optimized gradient boosting algorithms | Extremely effective for high-performance <br>supervised learning with tabular/structured data |\n",
+    "| Hugging Face <br>Transformers | Extensive pretrained transformer models <br>for easy fine-tuning | Community-driven ecosystem with user-friendly pipelines <br>for NLP and vision tasks |\n",
+    "| FastAI | Transfer learning made easy <br>for NLP & vision tasks | Fast prototyping with minimal code and strong performance <br>for applied DL |\n",
+    "| JAX | NumPy + autodiff + GPU/TPU acceleration | Cutting-edge numerical computing, works with PyTorch/TensorFlow <br>via interoperability libraries, but offers lower-level control |"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.11.14"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}

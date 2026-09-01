@@ -1,0 +1,300 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "id": "ffd1b500-ef5d-4223-a477-40d024ec4f8e",
+   "metadata": {},
+   "source": [
+    "# Scientific Data for Machine Learning"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "e6413b67",
+   "metadata": {},
+   "source": [
+    "<div class='alert alert-info'>\n",
+    "\n",
+    "- Describe key characteristics of big data -- 4Vs.\n",
+    "- Gain an overview of scientific data with types and forms of data.\n",
+    "- Explain representative data storage formats and their pros and cons.\n",
+    "- Understand data structures for ML/DL.\n",
+    "</div>"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "8c07a29f-20d7-4dfb-afbf-2b51d2da371e",
+   "metadata": {},
+   "source": [
+    "## 1. Big Data"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "c19e6624-faa4-45aa-88ed-ca18cde4e88b",
+   "metadata": {},
+   "source": [
+    "Big Data refers to datasets that are so large, complex, or fast-changing that traditional data processing tools cannot handle them efficiently.\n",
+    "- It encompasses not only sheer **volume** of data but also its **variety**, **velocity**, and **veracity** --- often summarized as **4 Vs** of big data.\n",
+    "\t- These datasets can come from numerous sources, including social media, sensor networks, scientific experiments, and transactional systems.\n",
+    "\t- Ability to collect and analyze such massive amounts of information allows organizations and researchers to uncover trends, correlations, and insights that would be impossible to detect with smaller datasets.\n",
+    "- Emergence of big data has transformed multiple domains, from business analytics and healthcare to climate science and genomics.\n",
+    "\t- Advanced computational methods, distributed storage systems, and parallel processing frameworks such as Hadoop and Spark have become essential for managing and analyzing these vast datasets.\n",
+    "\t- Efficient handling of big data enables organizations to make data-driven decisions, optimize operations, and identify opportunities for innovation."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "d20faa04-bcba-4ebb-9e5e-ceeaf0f3b07f",
+   "metadata": {},
+   "source": [
+    "In context of ML, big data provides raw material that fuels learning process.\n",
+    "- Large and diverse datasets allow ML models to capture complex patterns, generalize well to unseen data, and improve predictive performance.\n",
+    "\t- Without sufficient and high-quality data, even most sophisticated algorithms cannot perform effectively.\n",
+    "\t- From image recognition to NLP, every ML application depends on properly curated datasets for training, validation, and testing.\n",
+    "- Therefore, data is backbone of ML as it serves as foundation for training models to recognize patterns, make predictions, and generate insights.\n",
+    "\t- In addition, data determines applicability and scalability of ML solutions across domains, from scientific research to real-world applications."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "6f9261a2-4f7e-46c1-b4dd-03578ff2864a",
+   "metadata": {},
+   "source": [
+    "## 2. Understanding Scientific Data"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "f24ca2b4-a4dc-401a-8958-bd1e9d79066c",
+   "metadata": {},
+   "source": [
+    "Scientific data refers to any form of data that is collected, observed, measured, or generated as part of scientific research or experimentation.\n",
+    "- This data is used to support scientific analysis, develop theories, and validate hypotheses.\n",
+    "- It can come from a wide range of sources, including experiments, simulations, observations, or surveys across various scientific fields.\n",
+    "- In general, scientific data can be described ty two terms: **types of data** and **forms of data**.\n",
+    "- They are related but distinct\n",
+    "\t- types describe nature of the data\n",
+    "\t- forms describe how data is structured and formatted (and stored, which will be discussed below)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "d1d1d1d6-dafa-4f7c-80c3-f6a7854b9c0e",
+   "metadata": {},
+   "source": [
+    "### 2.1 Types of scientific data"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "83065110-b377-4719-831c-054110ed882f",
+   "metadata": {
+    "jp-MarkdownHeadingCollapsed": true
+   },
+   "source": [
+    "Types of scientific data refer to what data represents, and it focuses on nature or category of data content.\n",
+    "- At lowest level (Hardware- and system-level view), all data are represented as **bits** and **bytes**.\n",
+    "\t- smallest unit of storage in a computer is a **bit**, which holds either a 0 or a 1\n",
+    "\t- typically, eight bits are grouped together to form a **byte**\n",
+    "    - `01000001` → `A` → a character in text\n",
+    "    - `01000001` → `65` → an integer\n",
+    "- At a higher, semantic level, data can take forms such as numerical data, text data, and metadata.\n",
+    "    - **numerical data** are commonly represented as integers and floating-point numbers.\n",
+    "        - *Integers* are used to represent exact, discrete quantities, such as counts, indices, labels, or class identifiers, and they support precise arithmetic without rounding error.\n",
+    "        - *Floating-point numbers*, by contrast, represent real-valued quantities with fractional components and are essential for modeling continuous phenomena. Because floating-point representations are finite approximations of real numbers, they introduce rounding errors, making numerical stability an important consideration in scientific and ML computations.\n",
+    "            - In ML/DL, numerical precision plays a critical role in balancing accuracy, memory usage, and computational efficiency.\n",
+    "            - Common floating-point precisions include half-accurate, single precision (32-bit), double precision (64-bit).\n",
+    "            - *Single precision* is most widely used format in ML and DL, as it provides sufficient numerical accuracy while enabling efficient computation on modern hardware such as GPUs.\n",
+    "            - *Half precision* reduces memory consumption and increases training speed, particularly for large NNs, but requires careful handling to avoid numerical underflow or overflow.\n",
+    "            - *Double precision* offers higher numerical accuracy and stability, making it valuable for scientific simulations and sensitive calculations, though it is generally more computationally expensive.\n",
+    "            - In practice, ML and DL systems balance these precision levels to achieve an optimal trade-off between performance and accuracy.\n",
+    "            - Many modern frameworks, like TensorFlow and PyTorch, support mixed precision training, combining half and single precision to optimize performance while maintaining stability.\n",
+    "    - **Text data** represent information in form of characters, words, and symbols and are one of most prevalent data types in modern data analysis.\n",
+    "        - They arise in a wide range of scientific and real-world contexts, including research articles, medical records, social media content, system logs, and biological sequences.\n",
+    "        - Although text data are naturally meaningful to humans, they are inherently unstructured from a computational perspective and must be systematically processed (converted into numerical representations) before they can be used in ML/DL models.\n",
+    "        - Such process usually starts with basic text preprocessing steps such as tokenization, normalization, and building a vocabulary, and then moves on to feature extraction methods like bag-of-words or TF-IDF.\n",
+    "            - More advanced approaches use *embeddings*, where words, subwords, or even characters are represented as dense numerical vectors that capture semantic and syntactic relationships.\n",
+    "            - These representations allow models to understand patterns in language beyond simple keyword matching.\n",
+    "        - Modern DL models, particularly NNs such as RNNs, transformers, and LLMs, learn rich and contextualized representations of text directly from data.\n",
+    "            - These models can capture long-range dependencies, contextual meaning, and linguistic structure, making them effective for tasks such as text classification, information retrieval, machine translation, summarization, and question answering.\n",
+    "            - As a result, text data play a central role in ML and DL, bridging human language and computational intelligence through carefully designed representations and models.\n",
+    "    - **Metadata** are *data about data*, and they provide information that describes, explains, or gives context to primary data, such as units (`°C`), timestamps (`2026-01-03 10:00:00`), identifiers (`Sensor_ID = T-017`), and other descriptive attributes.\n",
+    "        - Metadata do not represent main content itself, but instead tell us what data are, how they were generated, and how they should be interpreted.\n",
+    "        - In ML/DL, metadata play a critical role throughout data and model lifecycle. They help define features and labels, document dataset structure, and record how data are split into training, validation, and testing sets.\n",
+    "        - Contextual information such as timestamps, locations, device types, or user attributes can complement primary data like images, text, or signals and significantly improve model performance.\n",
+    "        - As a result, metadata are not only foundational for data governance and transparency but also an important source of contextual knowledge in modern machine learning and deep learning systems."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "84144334-1691-4895-9132-a38100ece054",
+   "metadata": {},
+   "source": [
+    "### 2.2 Forms of scientific data"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "70735f97-69c8-4b7d-939d-327816756c05",
+   "metadata": {},
+   "source": [
+    "Forms of scientific data refer to a way data are organized, represented, and stored, which affects how they can be accessed, analyzed, and processed. Depending on their structure and format, scientific data are typically classified into three main forms: structured data, semi-structured data, and unstructured data. Each form has different characteristics, advantages, and challenges for storage, analysis, and application in scientific research and machine learning.\n",
+    "- **Structured data** are highly organized and follow a predefined schema, usually stored in rows and columns in databases or spreadsheets.\n",
+    "\t- Each data element has a fixed data type and format, which makes it easy to search, sort, and analyze using standard statistical methods or ML algorithms.\n",
+    "- **Semi-structured data** have some organizational structure but do not conform strictly to a fixed schema.\n",
+    "\t- They contain tags, labels, or metadata that make them partially organized, enabling flexible storage and processing.\n",
+    "\t- Examples: JSON or XML files storing experimental logs\n",
+    "\t- A Jupyter NB (.ipynb) is primarily a file format that stores code, outputs, text, and metadata in JSON format, so NB itself is essentially semi-structured data.\n",
+    "- **Unstructured data** lack a predefined structure or schema and are not organized in rows or columns.\n",
+    "\t- They often consist of raw, complex data that require special processing techniques to extract meaningful information.\n",
+    "\t- Examples: Text documents, Images, Audios, Video, Raw sensor signals\n",
+    "\t- They are rich in information but require advanced processing to extract meaningful features for ML and DL tasks."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "4891078c-092a-44c8-8bea-93b6068bad2c",
+   "metadata": {},
+   "source": [
+    "| Form | Characteristics | Examples | Typical Use in ML/DL |\n",
+    "| :--: | :-------------: | :------: | :------------------: |\n",
+    "| Structured | Highly organized, fixed schema | Tables, CSV, spreadsheets | Most classical ML algorithms |\n",
+    "| Semi-structured | Partially organized, flexible schema | JSON, XML, logs | Integrated date |\n",
+    "| Unstructured | No fixed structure | Text, images, audio, video | DL, NLP, CV |"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "96cbe836-e725-43ed-b918-ab2b88689107",
+   "metadata": {},
+   "source": [
+    "## 3. Data Storage Format"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "e1234596-9376-45cd-bd6c-d4f1dc430eed",
+   "metadata": {},
+   "source": [
+    "A data storage format defines how data is structured, stored, and represented so it can be efficiently read, processed, and shared between systems or applications.\n",
+    "- There are many types of storage formats used in scientific computing and data analysis.\n",
+    "- **There isn’t one data storage format that works in all cases, so choose a file format that best suits your data**.\n",
+    "- Choice of format affects storage efficiency, speed of access, compatibility with tools, and ease of use for humans."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "194c6dc5-5369-4440-9259-4c2140c11c70",
+   "metadata": {},
+   "source": [
+    "Below is an overview of common data formats (✅ for *good*, 🟨 for *ok/depends on a case*, and ❌ for *bad*) adapted from Aalto university's [**Python for scientific computing**](https://aaltoscicomp.github.io/python-for-scicomp/work-with-data/#what-is-a-data-format).\n",
+    "\n",
+    "| Name | Human <br>readable | Space <br>efficiency | Arbitrary <br>data | Tidy <br>data | Array <br>data | Long term <br>storage/sharing |\n",
+    "| :--: | :--: | :--: | :--: | :--: | :--: | :--: |\n",
+    "| CSV           | ✅ | ❌ | ❌ | ✅ | 🟨 | ✅ |\n",
+    "| Excel         | ❌ | ❌ | ❌ | 🟨 | ❌ | 🟨 |\n",
+    "| JSON          | ✅ | ❌ | 🟨 | ❌ | ❌ | ✅ |\n",
+    "| Pickle        | ❌ | 🟨 | ✅ | 🟨 | 🟨 | ❌ |\n",
+    "| npy           | ❌ | 🟨 | ❌ | ❌ | ✅ | ❌ |\n",
+    "| Feather       | ❌ | ✅ | ❌ | ✅ | ❌ | ❌ |\n",
+    "| HDF5          | ❌ | ✅ | ❌ | ❌ | ✅ | ✅ |\n",
+    "| NetCDF4       | ❌ | ✅ | ❌ | ❌ | ✅ | ✅ |\n",
+    "| Parquet       | ❌ | ✅ | 🟨 | ✅ | 🟨 | ✅ |\n",
+    "| Graph formats | 🟨 | 🟨 | ❌ | ❌ | ❌ | ✅ |"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "93e51580-71c0-4a3e-8174-60489e59be29",
+   "metadata": {},
+   "source": [
+    "## 4. Data Structures for ML/DL"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "02a75f3e-f0f8-4e99-b464-f2faeab3abdb",
+   "metadata": {},
+   "source": [
+    "Data structures form backbone of ML tasks, and main data structure for ML/DL is **tensor**.\n",
+    "- A tensor is a multi-dimensional array that provides a unified way to represent and manipulate data of different shapes and complexities.\n",
+    "    - **It generalizes scalars, vectors, and matrices to higher dimensions, serving as fundamental data structure in frameworks like TensorFlow and PyTorch**.\n",
+    "\t- *Scalars* (single numbers) are considered 0-dimensional tensors, *vectors* are 1-dimensional tensors, and *matrices* are 2-dimensional tensors.\n",
+    "\t- When extended to higher dimensions, tensors can naturally model more complex data types such as color images (3D: height × width × channels), videos (4D: frames × height × width × channels), or batches of training samples.\n",
+    "- Tensors are central to ML/DL because they align closely with mathematics that underpins most algorithms.\n",
+    "\t- They serve as format for both input data (such as feature vectors or images) and model parameters (such as weights in a NN).\n",
+    "\t- Furthermore, operations on tensors, such as addition, multiplication, reshaping, and convolution, are implemented in highly optimized ways by libraries such as NumPy, PyTorch, and TensorFlow.\n",
+    "\t- These frameworks make it possible to process large datasets efficiently by leveraging hardware acceleration on GPUs and TPUs."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "5ccd1e00-919a-4c13-9eb1-c23394d88ef7",
+   "metadata": {},
+   "source": [
+    "<div style=\"text-align:center;\"><figure><img src=\"./images/data/varied-data-structures.png\" width=\"75%\"><figcaption></figcaption></figure></div>"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "bb235a38-de7c-483b-ac55-ab1906d01055",
+   "metadata": {},
+   "source": [
+    "Why to use tensors in ML/DL (advantages of Tensor)?\n",
+    "- Generalization of scalars/vectors/matrices: tensors extend these concepts to any number of dimensions, which is essential for handling complex data like images (3D) and videos (4D+).\n",
+    "- Consistency: tensors unify data structures across ML/DL frameworks, simplifying model building, training, and deployment.\n",
+    "- Efficient computation: frameworks like TensorFlow and PyTorch optimize tensor operations for speed (using GPUs/TPUs).\n",
+    "- NN representations: input data (images, text) is converted to tensors.\n",
+    "- Automatic differentiation: tensors support gradient tracking, which is vital for **backpropagation** in NNs."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "7a2d2a63-b0e8-43a6-b5cd-254347482587",
+   "metadata": {},
+   "source": [
+    ":::{exercise}\n",
+    "\n",
+    "<div class='alert alert-success'>\n",
+    "\n",
+    "In [**Jupyter Notebook**](./resources/03-tensor.ipynb), we provide a tutorial about tensors including\n",
+    "- tensor creation\n",
+    "- tensor's properties (`shape`, `dtype`, `ndim`)\n",
+    "- tensor operations\n",
+    "   - indexing, slicing, transposing\n",
+    "   - element-wise operations: addition, subtraction, *etc.*\n",
+    "   - matrix multiplication(`np.dot`, `torch.matmul`)\n",
+    "   - reshaping, flattening, squeezing, unsqueezing\n",
+    "   - reduction operations: `sum`, `mean`, `max` along axes\n",
+    "   - broadcasting: rules and examples\n",
+    "- tensors in DL frameworks\n",
+    "   - moving tensors between CPUs and GPUs (suppose that you can access to GPU cards)\n",
+    "- converting images (grayscale and color) into tensors\n",
+    "</div>"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.11.14"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
